@@ -19,9 +19,7 @@ Horizon.setHorizon(periods, 10);
  * These variables can turn patch and route accounts off or on
  */
 boolean useRoutes = false;
-boolean usePatches = true;
-
-double maxPatchHa = 40.0;
+boolean usePatches = false;
 
 sourceRelative("../scripts/targets/flowTargets.bsh");
 sourceRelative("../scripts/targets/seralStages.bsh");
@@ -92,10 +90,6 @@ int Patchworks_TargetInit() {
     * Load patch target definitions here
     */
     if (usePatches) {
-	
-control.addPatchTarget("feature.Seral.regenerating", "patch.regen.0_max", 0.0, maxPatchHa);
-control.addPatchTarget("feature.Seral.regenerating", "patch.regen.max_plus", maxPatchHa, 9999999.0);
-control.addPatchTarget("feature.Seral.regenerating", "patch.blocks", 0.0, 9999999.0);
     }
 
    /*

@@ -82,7 +82,7 @@ int Patchworks_TargetInit() {
    /*
     * Summary accounts here
     */
-	
+
    /*
     * Load topology file here
     */
@@ -92,10 +92,11 @@ int Patchworks_TargetInit() {
     * Load patch target definitions here
     */
     if (usePatches) {
-	
+		
 control.addPatchTarget("feature.Seral.regenerating", "patch.regen.0_max", 0.0, maxPatchHa);
 control.addPatchTarget("feature.Seral.regenerating", "patch.regen.max_plus", maxPatchHa, 9999999.0);
 control.addPatchTarget("feature.Seral.regenerating", "patch.blocks", 0.0, 9999999.0);
+}
     }
 
    /*
@@ -131,8 +132,8 @@ int PatchWorks_Init() {
     * Set up the initial harvest targets
     * Uncomment and edit these lines if required
     */
-  control.loadTargetSummary("initialTargetSummary.csv");
-  control.loadTargetStatus("initialTargetStatus.csv");
+   // control.loadTargetSummary("initialTargetSummary.csv");
+   // control.loadTargetStatus("initialTargetStatus.csv");
 
    /*
     * Establish the initial timing constraints

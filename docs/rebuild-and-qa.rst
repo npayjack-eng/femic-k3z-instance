@@ -77,27 +77,110 @@ Validate against baseline:
    femic run --run-config config/run_profile.k3z.yaml --run-id k3z_compare
    femic patchworks matrix-build --config config/patchworks.runtime.windows.yaml --run-id k3z_compare
 
-
-Optional PCT->CT Variant QA
+Optional CT/Fert Variant QA
 ---------------------------
 
-These checks apply only to the PCT->CT variant (``config/patchworks.variant.pctct.yaml``, ``analysis/pctct.pin``).
+These checks apply only to the CT/fert variant
+(``config/patchworks.variant.ctfert.yaml``, ``analysis/ctfert.pin``).
 
 Variant command pattern:
 
 .. code-block:: bash
 
-   femic patchworks matrix-build --config config/patchworks.runtime.pctct.windows.yaml --run-id k3z_pctct
+   femic patchworks matrix-build --config config/patchworks.runtime.ctfert.windows.yaml --run-id k3z_ctfert
 
 Variant-specific expectations:
 
-- ``tracks_pctct/treatments.csv`` includes ``PCT`` and ``CT``.
-- ``tracks_pctct/accounts.csv`` includes ``product.Treated.managed.PCT`` and ``product.Treated.managed.CT``.
-- ``tracks_pctct/products.csv`` includes the matching treated-product surface.
-- ``tracks_pctct`` does not materialize ``F1``, ``F2``, or ``F3``.
-- ``SILV_STATE``-specific tracknames/strata materialize for:
-  - ``cc_pl_pct``
-  - ``cc_pl_pct_ct``
-- Live Patchworks smoke should show that pulling on a minimum ``CT``
-  treated-area target induces upstream ``PCT`` and ``CC`` in earlier periods.
+- ``tracks_ctfert/treatments.csv`` includes ``CT``, ``F1``, ``F2``, and
+  ``F3``.
+- ``tracks_ctfert/accounts.csv`` includes the matching
+  ``product.Treated.managed.*`` surfaces.
+- ``tracks_ctfert/products.csv`` includes the matching treated-product
+  surfaces.
+- ``SILV_STATE``-specific tracknames/strata materialize for the CT/fert
+  sequence.
+- The accepted CT/fert fragments surface preserves the baseline 218-fragment
+  geometry footprint exactly.
+- CT/fert fragment differences are limited to the low-yield AUs ``985502006``
+  and ``985502008``, where 9 fragments are retained out of THLB via
+  ``RETENTION = 1.0``.
+- Refresh the CT/fert ForestModel from canonical bundle/checkpoint inputs, but
+  do not replace the checked-in CT/fert fragments surface blindly with raw
+  export fragments unless the baseline-footprint invariants still hold.
+- Live Patchworks smoke should show that pulling on a minimum ``F3``
+  treated-area target induces upstream ``F2`` -> ``F1`` -> ``CT`` -> ``CC``.
 
+Deep reference: :doc:`silviculture-logic`
+
+
+Optional PCT-Only Subvariant QA
+-------------------------------
+
+These checks apply only to the three PCT-only subvariants
+(``pct_light``, ``pct_moderate``, ``pct_heavy``).
+
+Variant command pattern:
+
+.. code-block:: bash
+
+   femic patchworks matrix-build --config config/patchworks.runtime.pct_light.windows.yaml --run-id k3z_pct_light
+   femic patchworks matrix-build --config config/patchworks.runtime.pct_moderate.windows.yaml --run-id k3z_pct_moderate
+   femic patchworks matrix-build --config config/patchworks.runtime.pct_heavy.windows.yaml --run-id k3z_pct_heavy
+
+Variant-specific expectations:
+
+- each ``tracks_pct_*`` ``treatments.csv`` includes ``PCT`` and does not
+  include ``CT``.
+- each ``tracks_pct_*`` ``accounts.csv`` includes
+  ``product.Treated.managed.PCT`` and excludes ``product.Treated.managed.CT``.
+- each ``tracks_pct_*`` ``products.csv`` includes the matching treated-product surface.
+- the issue-14 ``pct_*`` footprint is centered on medium/high SI ``HW+FDC`` and
+  ``FDC+HW`` AUs ``985502000``, ``985503000``, ``985502001``, and
+  ``985503001``.
+- each ``tracks_pct_*`` surface does not materialize ``F1``, ``F2``, or ``F3``.
+- each ``tracks_pct_*`` surface materializes ``cc_pl_pct`` and not
+  ``cc_pl_pct_ct`` as the treatment-history state.
+- the accepted PCT-only fragments surfaces preserve the baseline 218-fragment
+  geometry footprint exactly.
+- PCT-only fragment differences are limited to treatment-path consequences in
+  the exported ForestModel/tracks surface; the checked-in fragments surface
+  itself should not diverge from baseline in
+  ``AU`` / ``IFM`` / ``RETENTION`` / ``ORIGIN`` / ``SILV_STATE``.
+- Refresh the PCT-only ForestModel from canonical bundle/checkpoint inputs, but
+  do not replace the checked-in PCT-only fragments surface blindly with raw
+  export fragments unless the baseline-footprint invariants still hold.
+- each ``tracks_pct_*`` surface retains species-wise managed yield / harvested-volume
+  accounts in addition to the ``Total`` surfaces.
+- Live Patchworks smoke should show that pulling on a minimum ``PCT``
+  treated-area target induces upstream ``CC`` in earlier periods.
+
+Deep reference: :doc:`silviculture-logic`
+
+Baseline Overlay Subvariant QA
+------------------------------
+
+These checks apply only to the four baseline-derived overlay subvariants.
+
+For the source contract, subvariant meaning map, and repeatable launch
+workflow, use :doc:`overlay-subvariants-workflow`.
+
+Variant command pattern:
+
+.. code-block:: bash
+
+   femic patchworks matrix-build --config config/patchworks.runtime.overlay.basecase_riparian.windows.yaml --run-id k3z_overlay_basecase_riparian
+
+Variant-specific expectations:
+
+- overlay builds still use baseline ``yield/forestmodel.xml``;
+- only fragment ``RETENTION`` and resulting managed/unmanaged area balance
+  should differ from baseline;
+- the student join contract still resolves through ``blocks.shp`` without nulls
+  on the selected retention field;
+- higher-retention overlays can legitimately drop some managed species
+  accounts if that species no longer appears on the managed side.
+
+Deep references:
+
+- :doc:`variants-and-subvariants`
+- :doc:`overlay-subvariants-workflow`

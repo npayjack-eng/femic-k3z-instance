@@ -4,9 +4,10 @@ Variants and Subvariants
 Purpose
 -------
 
-K3Z now ships as one instance checkout with two coexisting top-level
-Patchworks variants, three PCT-only teaching subvariants, and four
-baseline-derived overlay subvariants.
+K3Z now ships as one instance checkout with one baseline surface, a small
+family of coexisting CT/fert surfaces, a full-intensive teaching family,
+three PCT-only teaching subvariants, one dedicated stand-structure proving
+ground, and four baseline-derived overlay subvariants.
 
 Use this page as the canonical launch and interpretation map.
 
@@ -22,9 +23,21 @@ Quick Launch Selector
    * - "What does the accepted K3Z baseline do?"
      - ``base``
      - ``config/patchworks.runtime.windows.yaml`` + ``analysis/base.pin``
-   * - "What changes if we add CT plus repeated fertilization?"
-     - ``ctfert``
-     - ``config/patchworks.runtime.ctfert.windows.yaml`` + ``analysis/ctfert.pin``
+   * - "What changes if CT/fert expands to L/M/H SI classes with profile ``L15/M10/H5``?"
+     - ``ctfert_l15h5``
+     - ``config/patchworks.runtime.ctfert_l15h5.windows.yaml`` + ``analysis/ctfert_l15h5.pin``
+   * - "What changes if CT/fert expands to L/M/H SI classes with profile ``L20/M10/H0``?"
+     - ``ctfert_l20h0``
+     - ``config/patchworks.runtime.ctfert_l20h0.windows.yaml`` + ``analysis/ctfert_l20h0.pin``
+   * - "What changes if we combine ``PCT -> CT -> F1 -> F2 -> F3`` with light PCT?"
+     - ``intensive_light``
+     - ``config/patchworks.runtime.intensive_light.windows.yaml`` + ``analysis/intensive_light.pin``
+   * - "What changes if we combine ``PCT -> CT -> F1 -> F2 -> F3`` with moderate PCT?"
+     - ``intensive_moderate``
+     - ``config/patchworks.runtime.intensive_moderate.windows.yaml`` + ``analysis/intensive_moderate.pin``
+   * - "What changes if we combine ``PCT -> CT -> F1 -> F2 -> F3`` with heavy PCT?"
+     - ``intensive_heavy``
+     - ``config/patchworks.runtime.intensive_heavy.windows.yaml`` + ``analysis/intensive_heavy.pin``
    * - "What changes if we apply light PCT at age 10?"
      - ``pct_light``
      - ``config/patchworks.runtime.pct_light.windows.yaml`` + ``analysis/pct_light.pin``
@@ -34,6 +47,12 @@ Quick Launch Selector
    * - "What changes if we apply heavy PCT at age 10?"
      - ``pct_heavy``
      - ``config/patchworks.runtime.pct_heavy.windows.yaml`` + ``analysis/pct_heavy.pin``
+   * - "What changes if heavy PCT keeps the same treatments but uses the Bianca zone groups surface?"
+     - ``pct_heavy_zones``
+     - ``config/patchworks.runtime.pct_heavy_zones.windows.yaml`` + ``analysis/pct_heavy_zones.pin``
+   * - "What does the first optional BTC stand-structure bank look like in a safe proving ground?"
+     - ``intensive_light_standstructure``
+     - ``config/patchworks.runtime.intensive_light_standstructure.windows.yaml`` + ``analysis/intensive_light_standstructure.pin``
    * - "What changes if retained area follows the student overlay table?"
      - one of the four baseline overlay subvariants
      - the matching ``config/patchworks.runtime.overlay.*.windows.yaml`` + ``analysis/overlay_*.pin``
@@ -52,57 +71,93 @@ Variant Matrix
      - Intended use
    * - ``base``
      - ``config/patchworks.runtime.windows.yaml`` + ``analysis/base.pin``
-     - ``tracks/`` + ``yield/forestmodel.xml`` + ``output/patchworks_k3z_validated/fragments/fragments.shp``
-     - Nothing beyond the accepted teaching baseline.
-     - Baseline managed/unmanaged accounts, species-wise managed yield, seral, and ``og1`` / ``og2``.
+     - ``tracks/`` + ``output/patchworks_k3z_validated/forestmodel.xml`` + ``output/patchworks_k3z_validated/fragments/fragments.shp``
+     - Nothing beyond the accepted teaching baseline, plus AU-wise standing QMD, standing height, standing stems-per-ha, and harvested-QMD support surfaces.
+     - Baseline managed/unmanaged accounts, species-wise managed yield, seral, ``og1`` / ``og2``, AU-wise standing height, AU-wise standing stems-per-ha, and AU-wise harvested-stem QMD numerator / treated-area / live ratio accounts for ``CC``.
      - Default teaching and comparison surface.
-   * - ``ctfert``
-     - ``config/patchworks.runtime.ctfert.windows.yaml`` + ``analysis/ctfert.pin``
-     - ``tracks_ctfert/`` + ``yield/forestmodel_ctfert.xml`` + ``output/patchworks_k3z_ctfert_validated/fragments/fragments.shp``
-     - Adds ``SILV_STATE``, CT, synthetic QMD, and the ``F1 -> F2 -> F3`` treatment chain.
-     - CT/F1/F2/F3 treated products plus variant-specific managed account surfaces.
-     - Intensive-silviculture teaching scaffold with fertilization.
+   * - ``ctfert_l15h5``
+     - ``config/patchworks.runtime.ctfert_l15h5.windows.yaml`` + ``analysis/ctfert_l15h5.pin``
+     - ``tracks_ctfert_l15h5/`` + ``output/patchworks_k3z_ctfert_l15h5_validated/forestmodel.xml`` + ``output/patchworks_k3z_ctfert_l15h5_validated/fragments/fragments.shp``
+     - Keeps the CT/QMD/F1/F2/F3 chain, expands eligibility to six ``L/M/H`` SI AUs, applies fert boosts ``L=15%``, ``M=10%``, ``H=5%``, ramps the CT final-felling gap to ``0.0`` by ``cmai_argmax``, rebuilds QMD from accepted yield/height/TPH support inputs instead of the old placeholder age heuristic, uses the student-provided curated ``RETENTION`` overlay instead of the old uniform ``0.05`` placeholder, and compiles explicit BTC log grades so they sum to harvested-volume totals.
+     - CT/F1/F2/F3 treated products, AU-wise standing height, AU-wise standing stems-per-ha, AU-wise harvested-stem QMD product numerators/treated-area companions, normalized explicit BTC log-grade harvested products on both ``CC`` and ``CT`` surfaces, plus SI-profile-specific managed account surfaces.
+     - CT/fert teaching scaffold with explicit low/medium/high SI fert response differences.
+   * - ``ctfert_l20h0``
+     - ``config/patchworks.runtime.ctfert_l20h0.windows.yaml`` + ``analysis/ctfert_l20h0.pin``
+     - ``tracks_ctfert_l20h0/`` + ``output/patchworks_k3z_ctfert_l20h0_validated/forestmodel.xml`` + ``output/patchworks_k3z_ctfert_l20h0_validated/fragments/fragments.shp``
+     - Keeps CT on six ``L/M/H`` SI AUs, applies fert boosts ``L=20%`` and ``M=10%``, disables fert on ``H``-class AUs, ramps the CT final-felling gap to ``0.0`` by ``cmai_argmax``, rebuilds QMD from accepted yield/height/TPH support inputs instead of the old placeholder age heuristic, uses the student-provided curated ``RETENTION`` overlay instead of the old uniform ``0.05`` placeholder, and compiles explicit BTC log grades so they sum to harvested-volume totals.
+     - CT/F1/F2/F3 treated products on eligible AUs, AU-wise standing height, AU-wise standing stems-per-ha, AU-wise harvested-stem QMD product numerators/treated-area companions, normalized explicit BTC log-grade harvested products on both ``CC`` and ``CT`` surfaces, plus CT-only surfaces on the ``H`` cohort.
+     - CT/fert teaching scaffold for comparing a stronger low-SI response with no fertilization on high-SI AUs.
+   * - ``intensive_light``
+     - ``config/patchworks.runtime.intensive_light.windows.yaml`` + ``analysis/intensive_light.pin``
+     - ``tracks_intensive_light/`` + ``output/patchworks_k3z_intensive_light_validated/forestmodel.xml`` + ``output/patchworks_k3z_intensive_light_validated/fragments/fragments.shp``
+     - Adds light PCT ahead of the ``ctfert_l15h5`` CT/fert chain, expands the combined treatment family to the full 8-AU union of the current ``pct_*`` and ``ctfert_l15h5`` families, and keeps the curated CT/fert retention overlay.
+     - ``PCT`` plus ``CT/F1/F2/F3`` treated products, AU-wise standing height, AU-wise standing stems-per-ha, AU-wise harvested-stem QMD numerator / treated-area / live ratio accounts for ``PCT``, ``CT``, and downstream ``CC``.
+     - Full intensive-silviculture teaching scaffold with light PCT.
+   * - ``intensive_moderate``
+     - ``config/patchworks.runtime.intensive_moderate.windows.yaml`` + ``analysis/intensive_moderate.pin``
+     - ``tracks_intensive_moderate/`` + ``output/patchworks_k3z_intensive_moderate_validated/forestmodel.xml`` + ``output/patchworks_k3z_intensive_moderate_validated/fragments/fragments.shp``
+     - Adds moderate PCT ahead of the ``ctfert_l15h5`` CT/fert chain, expands the combined treatment family to the full 8-AU union of the current ``pct_*`` and ``ctfert_l15h5`` families, and keeps the curated CT/fert retention overlay.
+     - ``PCT`` plus ``CT/F1/F2/F3`` treated products, AU-wise standing height, AU-wise standing stems-per-ha, AU-wise harvested-stem QMD numerator / treated-area / live ratio accounts for ``PCT``, ``CT``, and downstream ``CC``.
+     - Full intensive-silviculture teaching scaffold with moderate PCT.
+   * - ``intensive_heavy``
+     - ``config/patchworks.runtime.intensive_heavy.windows.yaml`` + ``analysis/intensive_heavy.pin``
+     - ``tracks_intensive_heavy/`` + ``output/patchworks_k3z_intensive_heavy_validated/forestmodel.xml`` + ``output/patchworks_k3z_intensive_heavy_validated/fragments/fragments.shp``
+     - Adds heavy PCT ahead of the ``ctfert_l15h5`` CT/fert chain, expands the combined treatment family to the full 8-AU union of the current ``pct_*`` and ``ctfert_l15h5`` families, and keeps the curated CT/fert retention overlay.
+     - ``PCT`` plus ``CT/F1/F2/F3`` treated products, AU-wise standing height, AU-wise standing stems-per-ha, AU-wise harvested-stem QMD numerator / treated-area / live ratio accounts for ``PCT``, ``CT``, and downstream ``CC``.
+     - Full intensive-silviculture teaching scaffold with heavy PCT.
    * - ``pct_light``
      - ``config/patchworks.runtime.pct_light.windows.yaml`` + ``analysis/pct_light.pin``
-     - ``tracks_pct_light/`` + ``yield/forestmodel_pct_light.xml`` + ``output/patchworks_k3z_pct_light_validated/fragments/fragments.shp``
-     - Adds ``SILV_STATE`` plus a planted-only light PCT gate, but no CT or fertilization chain.
-     - ``PCT`` treated products plus species-wise managed yield / harvest-volume surfaces.
+     - ``tracks_pct_light/`` + ``output/patchworks_k3z_pct_light_validated/forestmodel.xml`` + ``output/patchworks_k3z_pct_light_validated/fragments/fragments.shp``
+     - Adds ``SILV_STATE`` plus a planted-only light PCT gate, no CT or fertilization chain, and uses the tracked student thinners ``RETENTION`` overlay instead of the old uniform ``0.05`` placeholder.
+     - ``PCT`` treated products, AU-wise standing height, AU-wise standing stems-per-ha, AU-wise harvested-stem QMD numerator / treated-area / live ratio accounts for both ``PCT`` and ``CC``, plus species-wise managed yield / harvest-volume surfaces.
      - Light-intensity stand-tending teaching scaffold.
    * - ``pct_moderate``
      - ``config/patchworks.runtime.pct_moderate.windows.yaml`` + ``analysis/pct_moderate.pin``
-     - ``tracks_pct_moderate/`` + ``yield/forestmodel_pct_moderate.xml`` + ``output/patchworks_k3z_pct_moderate_validated/fragments/fragments.shp``
-     - Adds ``SILV_STATE`` plus a planted-only moderate PCT gate, but no CT or fertilization chain.
-     - ``PCT`` treated products plus species-wise managed yield / harvest-volume surfaces.
+     - ``tracks_pct_moderate/`` + ``output/patchworks_k3z_pct_moderate_validated/forestmodel.xml`` + ``output/patchworks_k3z_pct_moderate_validated/fragments/fragments.shp``
+     - Adds ``SILV_STATE`` plus a planted-only moderate PCT gate, no CT or fertilization chain, and uses the tracked student thinners ``RETENTION`` overlay instead of the old uniform ``0.05`` placeholder.
+     - ``PCT`` treated products, AU-wise standing height, AU-wise standing stems-per-ha, AU-wise harvested-stem QMD numerator / treated-area / live ratio accounts for both ``PCT`` and ``CC``, plus species-wise managed yield / harvest-volume surfaces.
      - Moderate-intensity stand-tending teaching scaffold.
    * - ``pct_heavy``
      - ``config/patchworks.runtime.pct_heavy.windows.yaml`` + ``analysis/pct_heavy.pin``
-     - ``tracks_pct_heavy/`` + ``yield/forestmodel_pct_heavy.xml`` + ``output/patchworks_k3z_pct_heavy_validated/fragments/fragments.shp``
-     - Adds ``SILV_STATE`` plus a planted-only heavy PCT gate, but no CT or fertilization chain.
-     - ``PCT`` treated products plus species-wise managed yield / harvest-volume surfaces.
+     - ``tracks_pct_heavy/`` + ``output/patchworks_k3z_pct_heavy_validated/forestmodel.xml`` + ``output/patchworks_k3z_pct_heavy_validated/fragments/fragments.shp``
+     - Adds ``SILV_STATE`` plus a planted-only heavy PCT gate, no CT or fertilization chain, and uses the tracked student thinners ``RETENTION`` overlay instead of the old uniform ``0.05`` placeholder.
+     - ``PCT`` treated products, AU-wise standing height, AU-wise standing stems-per-ha, AU-wise harvested-stem QMD numerator / treated-area / live ratio accounts for both ``PCT`` and ``CC``, plus species-wise managed yield / harvest-volume surfaces.
      - Heavy-intensity stand-tending teaching scaffold.
+   * - ``pct_heavy_zones``
+     - ``config/patchworks.runtime.pct_heavy_zones.windows.yaml`` + ``analysis/pct_heavy_zones.pin``
+     - ``tracks_pct_heavy_zones/`` + ``output/patchworks_k3z_pct_heavy_validated/forestmodel.xml`` + ``output/patchworks_k3z_pct_heavy_validated/fragments/fragments.shp``
+     - Reuses the validated heavy-PCT ForestModel and fragments surfaces, but swaps the uniform ``groups.csv`` assignment for Bianca's alternate ``groups_zones.csv`` grouping surface.
+     - The same heavy-PCT treated products/accounts as ``pct_heavy``, but with zone-based group assignments available in Patchworks reports and UI grouping.
+     - Heavy-PCT teaching scaffold with alternate zone-grouping for comparison.
+   * - ``intensive_light_standstructure``
+     - ``config/patchworks.runtime.intensive_light_standstructure.windows.yaml`` + ``analysis/intensive_light_standstructure.pin``
+     - ``tracks_intensive_light_standstructure/`` + ``output/patchworks_k3z_intensive_light_standstructure_validated/forestmodel.xml`` + ``output/patchworks_k3z_intensive_light_standstructure_validated/fragments/fragments.shp``
+     - Reuses the light full-intensive treatment scaffold, but also activates the first optional BTC stand-structure bank through the unattended `/TSR` overlay seam.
+     - Adds AU-wise managed stand-structure feature accounts for ``MAI``, ``BasalArea000``, ``DBHg000``, ``SPH000``, ``StemCount000``, ``StemCount125``, and ``StemCount175`` on top of the ordinary full-intensive light surface.
+     - Dedicated proving-ground surface for validating the first optional BTC indicator bank without touching student-facing variants.
    * - ``basecase_riparian``
      - ``config/patchworks.runtime.overlay.basecase_riparian.windows.yaml`` + ``analysis/overlay_basecase_riparian.pin``
-     - ``tracks_overlay_basecase_riparian/`` + baseline ``yield/forestmodel.xml`` + ``output/patchworks_k3z_overlay_basecase_riparian_validated/fragments/fragments.shp``
+     - ``tracks_overlay_basecase_riparian/`` + baseline ``output/patchworks_k3z_validated/forestmodel.xml`` + ``output/patchworks_k3z_overlay_basecase_riparian_validated/fragments/fragments.shp``
      - Baseline fragment ``RETENTION`` is replaced by the student's ``Basecase_Riparian`` field.
-     - Only the managed/unmanaged split should change relative to baseline.
+     - Only the managed/unmanaged split should change relative to baseline; the AU-wise standing height, standing stems-per-ha, and harvested-QMD ``CC`` account contracts should remain parallel to baseline.
      - Baseline subvariant for riparian-style retained-area comparison.
    * - ``basecase_sum``
      - ``config/patchworks.runtime.overlay.basecase_sum.windows.yaml`` + ``analysis/overlay_basecase_sum.pin``
-     - ``tracks_overlay_basecase_sum/`` + baseline ``yield/forestmodel.xml`` + ``output/patchworks_k3z_overlay_basecase_sum_validated/fragments/fragments.shp``
+     - ``tracks_overlay_basecase_sum/`` + baseline ``output/patchworks_k3z_validated/forestmodel.xml`` + ``output/patchworks_k3z_overlay_basecase_sum_validated/fragments/fragments.shp``
      - Baseline fragment ``RETENTION`` is replaced by the student's ``BaseCase_Sum`` field.
-     - Only the managed/unmanaged split should change relative to baseline.
+     - Only the managed/unmanaged split should change relative to baseline; the AU-wise standing height, standing stems-per-ha, and harvested-QMD ``CC`` account contracts should remain parallel to baseline.
      - Baseline subvariant for the student's summed base-case retention.
    * - ``scenario1_sum``
      - ``config/patchworks.runtime.overlay.scenario1_sum.windows.yaml`` + ``analysis/overlay_scenario1_sum.pin``
-     - ``tracks_overlay_scenario1_sum/`` + baseline ``yield/forestmodel.xml`` + ``output/patchworks_k3z_overlay_scenario1_sum_validated/fragments/fragments.shp``
+     - ``tracks_overlay_scenario1_sum/`` + baseline ``output/patchworks_k3z_validated/forestmodel.xml`` + ``output/patchworks_k3z_overlay_scenario1_sum_validated/fragments/fragments.shp``
      - Baseline fragment ``RETENTION`` is replaced by the student's ``Scenario1_Sum`` field.
-     - Only the managed/unmanaged split should change relative to baseline.
+     - Only the managed/unmanaged split should change relative to baseline; the AU-wise standing height, standing stems-per-ha, and harvested-QMD ``CC`` account contracts should remain parallel to baseline.
      - Baseline subvariant for the student's first scenario retention.
    * - ``scenario2_sum``
      - ``config/patchworks.runtime.overlay.scenario2_sum.windows.yaml`` + ``analysis/overlay_scenario2_sum.pin``
-     - ``tracks_overlay_scenario2_sum/`` + baseline ``yield/forestmodel.xml`` + ``output/patchworks_k3z_overlay_scenario2_sum_validated/fragments/fragments.shp``
+     - ``tracks_overlay_scenario2_sum/`` + baseline ``output/patchworks_k3z_validated/forestmodel.xml`` + ``output/patchworks_k3z_overlay_scenario2_sum_validated/fragments/fragments.shp``
      - Baseline fragment ``RETENTION`` is replaced by the student's ``Scenario2_Sum`` field.
-     - Only the managed/unmanaged split should change relative to baseline.
+     - Only the managed/unmanaged split should change relative to baseline; the AU-wise standing height, standing stems-per-ha, and harvested-QMD ``CC`` account contracts should remain parallel to baseline.
      - Baseline subvariant for the student's second scenario retention.
 
 How to Choose a Surface
@@ -110,10 +165,31 @@ How to Choose a Surface
 
 1. Start with ``base`` unless you explicitly need a treatment scaffold or an
    overlay sensitivity surface.
-2. Choose ``ctfert`` when the class exercise needs ``CT -> F1 -> F2 -> F3``.
-3. Choose one of ``pct_light``, ``pct_moderate``, or ``pct_heavy`` when
-   the class exercise needs PCT intensity comparison without CT or fertilization.
-4. Choose one of the four overlay subvariants only when the exercise is about
+2. Choose ``ctfert_l15h5`` or ``ctfert_l20h0`` when the class exercise is
+   about SI-specific fertilization response across the six ``L/M/H`` CT-eligible
+   ``CWHvm_FDC+HW`` / ``CWHvm_CW+HW`` AUs.
+   These pins now keep the AU/species/log-grade volume/value bridge hidden by
+   default through ``accounts.default.csv`` only; set
+   ``boolean enableLogGradeAccounts = true;`` in the pin when you explicitly
+   want the full log-grade teaching surface. The canonical ``products.csv``
+   track structure remains live either way.
+   When enabled, the value side uses shipped coast-market teaching matrices:
+   managed/treatment-driven harvest defaults to ``second_growth_coast_2025``
+   and unmanaged/natural-origin harvest defaults to ``old_growth_coast_2025``.
+   Species without direct report rows use explicit documented proxy mappings in
+   the FEMIC recipe layer rather than silent averaging.
+3. Choose one of ``intensive_light``, ``intensive_moderate``, or
+   ``intensive_heavy`` when the class exercise needs the full
+   ``PCT -> CT -> F1 -> F2 -> F3`` scaffold on one launchable K3Z surface.
+4. Choose one of ``pct_light``, ``pct_moderate``, ``pct_heavy``, or
+   ``pct_heavy_zones`` when the class exercise needs PCT intensity comparison
+   without CT or fertilization. Use ``pct_heavy_zones`` specifically when the
+   alternate Bianca zone-group surface is part of the teaching question.
+5. Choose ``intensive_light_standstructure`` only when you are explicitly
+   validating the first optional BTC stand-structure bank or extending that
+   proving-ground pattern; it is not the default teaching surface for current
+   student projects.
+6. Choose one of the four overlay subvariants only when the exercise is about
    alternative retained-area policy on top of the accepted baseline.
 
 Overlay Provenance and Join Contract
@@ -160,6 +236,53 @@ account view.
 
 For the repeatable student/operator workflow, use
 :doc:`overlay-subvariants-workflow`.
+
+Log-Grade Teaching Bridge Note
+------------------------------
+
+The AU/species/log-grade volume and value families should be interpreted as a
+deliberate bridge between two teaching surfaces:
+
+- ecosystem-side harvested volume from the growth model; and
+- products-side grade/value accounting for forest-sector exploration.
+
+They are not a claim that FEMIC directly observed species-by-grade outturn in
+primary BTC output. Instead, FEMIC:
+
+1. takes the additive explicit BTC grade family ``D/F/H/I/J/U/X/Y``;
+2. normalizes it so grade totals match harvested-volume totals;
+3. combines those totals with AU/species volume shares; and
+4. applies shipped coast-market price matrices plus documented species proxies
+   to emit value accounts.
+
+That is a modeled teaching surface, but it is intentionally auditable and
+user-tweakable through the FEMIC recipe/overlay contract.
+
+`pct_heavy_zones` Revenue Rollups
+---------------------------------
+
+The ``pct_heavy_zones`` sibling variant also ships a small set of simpler
+gross-revenue rollups on top of the fine-grained log-grade value surface.
+
+These summary accounts are available even when the full log-grade teaching
+surface stays off by default:
+
+- ``product.Logs_Grade_Value_Total.managed.CW.CC``
+- ``product.Logs_Grade_Value_Total.managed.FDC.CC``
+- ``product.Logs_Grade_Value_Total.managed.HW.CC``
+- ``product.Logs_Grade_Value_Total.managed.PLC.CC``
+- ``product.Logs_Grade_Value_Total.managed.YC.CC``
+- ``product.Logs_Grade_Value_Total.managed.Total.CC``
+
+Interpretation:
+
+- the species accounts sum all existing ``D/F/H/I/J/U/X/Y`` value rows for
+  that species across the zoned ``pct_heavy_zones`` surface;
+- the ``Total`` account sums all shipped species subtotal rows into one global
+  gross-revenue teaching account for clearcut harvest.
+
+These accounts are intended as the easy-entry student surface. Turn on the full
+log-grade account family only when you want the AU/species/log-grade detail.
 
 Audit Checklist
 ---------------

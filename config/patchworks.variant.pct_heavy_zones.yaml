@@ -1,0 +1,28 @@
+variant_id: pct_heavy_zones
+label: "K3Z optional PCT heavy zones subvariant"
+description: "Single-intensity K3Z PCT-only heavy subvariant using the student thinners RETENTION overlay plus the alternate zone-based groups surface from the Bianca fork."
+overlay:
+  source_table: tmp/k3z_pct_thinners_retention_join.csv
+  source_key: BLOCK
+  retention_column: retention_thinners
+patchworks:
+  runtime_config: config/patchworks.runtime.pct_heavy_zones.windows.yaml
+  analysis_pin: models/k3z_patchworks_model/analysis/pct_heavy_zones.pin
+  tracks_dir: models/k3z_patchworks_model/tracks_pct_heavy_zones
+  forestmodel_xml: output/patchworks_k3z_pct_heavy_validated/forestmodel.xml
+  fragments_shapefile: output/patchworks_k3z_pct_heavy_validated/fragments/fragments.shp
+  silviculture_config: config/silviculture.k3z.pct_heavy.yaml
+build:
+  export_command: >-
+    python tools/refresh_pct_heavy_zones_tracks.py
+  publish_forestmodel_note: >-
+    Treat this as a track-surface sibling of the canonical heavy PCT variant.
+    Keep the accepted heavy-PCT ForestModel and fragments surfaces unchanged,
+    refresh `tracks_pct_heavy_zones/` from `tracks_pct_heavy/`, and replace
+    `groups.csv` with `groups_zones.csv` before launch validation.
+  matrix_build_command: >-
+    python tools/refresh_pct_heavy_zones_tracks.py
+notes:
+  - "Use this subvariant when a heavy PCT-only teaching surface needs the alternate zone-based groups assignment from the Bianca fork."
+  - "Patchworks launch entrypoint: analysis/pct_heavy_zones.pin"
+  - "Accepted validated fragments still use the student thinners RETENTION values instead of the old uniform 0.05 placeholder."
